@@ -8,6 +8,8 @@ import id.develo.golazo.core.data.source.remote.RemoteDataSource
 import id.develo.golazo.core.data.source.remote.network.ApiService
 import id.develo.golazo.core.domain.repository.ITeamRepository
 import id.develo.golazo.core.utils.AppExecutors
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -19,10 +21,12 @@ import java.util.concurrent.TimeUnit
 val databaseModule = module {
     factory { get<TeamDatabase>().teamDao() }
     single {
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("golazo".toCharArray())
+        val factory = SupportFactory(passphrase)
         Room.databaseBuilder(
             androidContext(),
             TeamDatabase::class.java, "teams.db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration().openHelperFactory(factory).build()
     }
 }
 
