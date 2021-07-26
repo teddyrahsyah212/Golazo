@@ -17,7 +17,8 @@ class TeamRepository(
     private val appExecutors: AppExecutors
 ) : ITeamRepository {
     override fun getAllTeams(): Flow<Resource<List<TeamModel>>> =
-        object : id.develo.golazo.core.data.source.NetworkBoundResource<List<TeamModel>, List<TeamItemResponse>>() {
+        object :
+            id.develo.golazo.core.data.source.NetworkBoundResource<List<TeamModel>, List<TeamItemResponse>>() {
             override fun loadFromDB(): Flow<List<TeamModel>> =
                 localDataSource.getAllTeams().map { DataMapper.mapEntitiesToDomain(it) }
 

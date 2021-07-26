@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "teams")
-data class TeamEntity (
+data class TeamEntity(
 
     // Team Detail
     @PrimaryKey(autoGenerate = false)
